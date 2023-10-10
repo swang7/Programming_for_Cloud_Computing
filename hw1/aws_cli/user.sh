@@ -8,12 +8,11 @@ function get_user_info() {
     bucket_name=$1
     user=$2
 
-    response=$(aws s3 cp "s3://$bucket_name/$USER_DIR$user" "/tmp/$user")
+    response=$(aws s3 cp "s3://$bucket_name/$USER_DIR$user" "/tmp/$user" > /dev/null 2>&1)
     
     if [[ ${?} -eq 0 ]]; then
         return 0 # 0 in Bash script means true.
     else
-        #echo "ERROR:  AWS reports s3api get-object operation failed.\n$response"
         return 1 # 1 in Bash script means false.
     fi
 }
@@ -37,9 +36,3 @@ function auth_user() {
 
     return 1
 }
-
-# if (auth_user $BUCKET_NAME $1 $2); then 
-#     echo "user authenticated"; 
-# else
-#     echo "user not found or invalid password"
-# fi
