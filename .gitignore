@@ -1,0 +1,9 @@
+lectures/
+old/
+*.txt
+*.log
+.*.swp
+
+__pycache__/
+*.py[cod]
+*$py.class
