@@ -1,5 +1,7 @@
 lectures/
 old/
+screenshots/
+*.zip
 *.txt
 *.log
 .*.swp
