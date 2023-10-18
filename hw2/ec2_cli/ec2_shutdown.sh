@@ -19,7 +19,8 @@ function get_ebs_vol_id() {
 function detach_ebs_vol() {
     result=$(aws ec2 detach-volume --volume-id $EBS_vol_id)
     if [[ ${?} -eq 0 ]]; then
-        echo "detach ebs VolumeId $EBS_vol_id"
+        echo $result
+        echo "detached ebs VolumeId $EBS_vol_id"
         return 0 # 0 in Bash script means true.
     else
         return 1 # 1 in Bash script means false.
@@ -29,6 +30,7 @@ function detach_ebs_vol() {
 function stop_ec2_instance() {
     result=$(aws ec2 stop-instances --instance-ids $EC_instance_id)
     if [[ ${?} -eq 0 ]]; then
+        echo $result
         echo "stopped ec2 InstanceId $EC_instance_id"
         return 0 # 0 in Bash script means true.
     else
@@ -40,7 +42,8 @@ function stop_ec2_instance() {
 function terminate_ec2_instance() {
     result=$(aws ec2 terminate-instances --instance-ids $EC_instance_id)
     if [[ ${?} -eq 0 ]]; then
-        echo "terminate ec2 InstanceId $EC_instance_id"
+        echo $result
+        echo "terminated ec2 InstanceId $EC_instance_id"
         return 0 # 0 in Bash script means true.
     else
         return 1 # 1 in Bash script means false.

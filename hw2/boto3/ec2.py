@@ -6,7 +6,7 @@ MY_IP="73.93.72.74/32"
 SSH_SECURITY_GROUP="SSH-ONLY"
 UBUNTU_IMAGE="ami-03f65b8614a860c29"
 INSTANCE_TAG="Name"
-INSTANCE_TAG_VALUE="ucscx-homework-2-part-2"
+INSTANCE_TAG_VALUE="ucscx-homework-2-problem-2"
 EBS_TAG="Homework"
 EBS_TAG_VALUE1="2.1"
 EBS_TAG_VALUE2="2.2"
@@ -98,11 +98,11 @@ def new_ec2_instance(ec2, security_group_id):
     except ClientError as e:
         print(e)
     
-def attach_ebs_to_instance(ec2, instance_id, volume_id):
+def attach_ebs_to_instance(ec2, instance_id, volume_id, device_name):
 
     try:
         response = ec2.attach_volume(
-            Device="/dev/xvdg",
+            Device=device_name,
             InstanceId=instance_id,
             VolumeId=volume_id)
 
@@ -134,8 +134,8 @@ def main():
     volume_id2 = create_ebs_volume(ec2)
     volume_id2 = get_ebs_vol_id(ec2, EBS_TAG_VALUE2)
     volume_id1 = get_ebs_vol_id(ec2, EBS_TAG_VALUE1)
-    attach_ebs_to_instance(ec2, instance_id, volume_id1)
-    attach_ebs_to_instance(ec2, instance_id, volume_id2)
+    attach_ebs_to_instance(ec2, instance_id, volume_id1, "/dev/xvdf")
+    attach_ebs_to_instance(ec2, instance_id, volume_id2, "/dev/xvdg")
 
 if __name__ == "__main__":
     main()

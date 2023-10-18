@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 INSTANCE_TAG="Name"
-INSTANCE_TAG_VALUE="ucscx-homework-2-part-1"
+INSTANCE_TAG_VALUE="ucscx-homework-2-problem-2"
 EBS_TAG="Homework"
 EBS_TAG_VALUE1="2.1"
 EBS_TAG_VALUE2="2.2"
@@ -29,6 +29,10 @@ def get_instance_id(ec2, tag_value):
                 'Name': "tag:" + INSTANCE_TAG,
                 'Values': [
                     tag_value
+                ],
+                'Name': "instance-state-name",
+                'Values': [
+                    "running"
                 ]
             },
         ],
@@ -49,6 +53,7 @@ def detach_ebs_vol(ec2, vol_id):
     response = ec2.detach_volume(
         VolumeId=vol_id,
     )
+    ec2.get_waiter('volume_available').wait(VolumeIds=[vol_id])
     print(f"***detach ebs vol {vol_id}")
     print(response)
 
@@ -71,10 +76,10 @@ def main():
     instance_id = get_instance_id(ec2, INSTANCE_TAG_VALUE)
     volume_id1 = get_ebs_vol_id(ec2, EBS_TAG_VALUE1)
     volume_id2 = get_ebs_vol_id(ec2, EBS_TAG_VALUE2)
-    #stop_ec2_instance(ec2, instance_id)
-    # detach_ebs_vol(ec2, volume_id1)
-    # detach_ebs_vol(ec2, volume_id2)
-    # terminate_ec2_instance(ec2, instance_id)
+    stop_ec2_instance(ec2, instance_id)
+    detach_ebs_vol(ec2, volume_id1)
+    detach_ebs_vol(ec2, volume_id2)
+    terminate_ec2_instance(ec2, instance_id)
     delete_ebs_vol(ec2, volume_id1)
     delete_ebs_vol(ec2, volume_id2)
 
