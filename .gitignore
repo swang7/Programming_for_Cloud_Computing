@@ -9,3 +9,5 @@ screenshots/
 __pycache__/
 *.py[cod]
 *$py.class
+
+.terraform*
