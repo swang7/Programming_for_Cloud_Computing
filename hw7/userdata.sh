@@ -6,4 +6,6 @@ runcmd:
 - sudo echo '/dev/sdc /mnt/hw7 xfs defaults 0 0' >> /etc/fstab
 - sudo mount -a
 - echo 'Hello, world' >  /mnt/hw7/hello.txt
+- sudo apt-get update -y
+- sudo apt-get install -y nginx > /tmp/nginx.log
 output : { all : '| tee -a /var/log/cloud-init-output.log' }
